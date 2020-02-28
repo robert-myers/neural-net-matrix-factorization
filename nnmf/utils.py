@@ -59,4 +59,4 @@ def chunk_df(df, size):
 
     See here: https://stackoverflow.com/a/25701576/1424734
     """
-    return (df[pos:pos + size] for pos in xrange(0, len(df), size))
+    return (df[pos:pos + size] for pos in range(0, len(df), size))

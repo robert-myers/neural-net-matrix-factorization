@@ -36,7 +36,7 @@ def train(model, sess, saver, train_data, valid_data, batch_size, max_epochs, us
     # Optimize
     prev_valid_rmse = float("Inf")
     early_stop_epochs = 0
-    for epoch in xrange(max_epochs):
+    for epoch in range(max_epochs):
         # Run (S)GD
         shuffled_df = train_data.sample(frac=1)
         batches = chunk_df(shuffled_df, batch_size) if batch_size else [train_data]
@@ -140,7 +140,7 @@ if __name__ == '__main__':
                 raise NotImplementedError("Model '{}' not implemented".format(model_name))
 
             model.init_sess(sess)
-            saver = tf.train.Saver()
+            saver = tf.compat.v1.train.Saver()
 
             # Train
             if mode in ('train', 'test'):
@@ -174,7 +174,7 @@ if __name__ == '__main__':
         _NNMF_LAM_MIN, _NNMF_LAM_MAX = -4.0, 4.0
         _SVINNMF_VAR_MIN, _SVINNMF_VAR_MAX = -2.0, 2.0
         _SVINNMF_KL_EPOCH_MIN, _SVINNMF_KL_EPOCH_MAX = 2.0, 4.0
-        for _ in xrange(hyperparam_search_size):
+        for _ in range(hyperparam_search_size):
             if model_name == 'NNMF':
                 hyperparams_list.append({'lam': 10 ** np.random.uniform(_NNMF_LAM_MIN, _NNMF_LAM_MAX)})
             elif model_name == 'SVINNMF':

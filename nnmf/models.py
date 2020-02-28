@@ -41,7 +41,7 @@ class _NNMFBase(object):
 
     def init_sess(self, sess):
         self.sess = sess
-        init = tf.initialize_all_variables()
+        init = tf.compat.v1.initialize_all_variables()
         self.sess.run(init)
 
     def _train_iteration(self, data, additional_feed=None):
@@ -114,15 +114,15 @@ class NNMF(_NNMFBase):
     def _init_ops(self):
         # Loss
         reconstruction_loss = tf.reduce_sum(
-            tf.square(tf.subtract(self.r_target, self.r)), reduction_indices=[0])
-        reg = tf.add_n([tf.reduce_sum(tf.square(self.Uprime), reduction_indices=[0,1]),
-                        tf.reduce_sum(tf.square(self.U), reduction_indices=[0,1]),
-                        tf.reduce_sum(tf.square(self.V), reduction_indices=[0,1]),
-                        tf.reduce_sum(tf.square(self.Vprime), reduction_indices=[0,1])])
+            tf.square(tf.subtract(self.r_target, self.r)), axis=0)
+        reg = tf.add_n([tf.reduce_sum(tf.square(self.Uprime), axis=None),
+                        tf.reduce_sum(tf.square(self.U), axis=None),
+                        tf.reduce_sum(tf.square(self.V), axis=None),
+                        tf.reduce_sum(tf.square(self.Vprime), axis=None)])
         self.loss = reconstruction_loss + (self.lam*reg)
 
         # Optimizer
-        self.optimizer = tf.train.AdamOptimizer()
+        self.optimizer = tf.compat.v1.train.AdamOptimizer()
         # Optimize the MLP weights
         f_train_step = self.optimizer.minimize(self.loss, var_list=self.mlp_weights.values())
         # Then optimize the latents
@@ -256,7 +256,7 @@ class SVINNMF(_NNMFBase):
 
         # TODO weighting of gradient, handle multiple samples
         log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(
-            tf.square(tf.subtract(self.r_target, self.r)), reduction_indices=[0])
+            tf.square(tf.subtract(self.r_target, self.r)), axis=0)
         elbo = log_prob-(self.kl_weight*KL_all)
         self.loss = -elbo
 
