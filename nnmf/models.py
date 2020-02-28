@@ -188,22 +188,22 @@ class SVINNMF(_NNMFBase):
 
     def _init_vars(self):
         # Latents
-        self.U_mu = tf.Variable(tf.truncated_normal(
+        self.U_mu = tf.Variable(tf.compat.v1.truncated_normal(
             [self.num_users, self.D], **self.latent_normal_init_params))
         self.U_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_users, self.D], minval=0.0, maxval=0.5))
 
-        self.Uprime_mu = tf.Variable(tf.truncated_normal(
+        self.Uprime_mu = tf.Variable(tf.compat.v1.truncated_normal(
             [self.num_users, self.Dprime], **self.latent_normal_init_params))
         self.Uprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_users, self.Dprime], minval=0.0, maxval=0.5))
 
-        self.V_mu = tf.Variable(tf.truncated_normal(
+        self.V_mu = tf.Variable(tf.compat.v1.truncated_normal(
             [self.num_items, self.D], **self.latent_normal_init_params))
         self.V_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_items, self.D], minval=0.0, maxval=0.5))
 
-        self.Vprime_mu = tf.Variable(tf.truncated_normal(
+        self.Vprime_mu = tf.Variable(tf.compat.v1.truncated_normal(
             [self.num_items, self.Dprime], **self.latent_normal_init_params))
         self.Vprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_items, self.Dprime], minval=0.0, maxval=0.5))
