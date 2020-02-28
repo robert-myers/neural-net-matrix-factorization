@@ -201,7 +201,7 @@ if __name__ == '__main__':
             model_params.update(hyperparams)
             model_params.update({'model_filename': os.path.join(select_dir, "{}.ckpt".format(str(idx)))})
 
-            with tf.Session() as sess:
+            with tf.compat.v1.Session() as sess:
                 # Define computation graph & Initialize
                 print('Building network & initializing variables')
                 if model_name == 'NNMF':
