@@ -213,7 +213,7 @@ if __name__ == '__main__':
                     raise NotImplementedError("Model '{}' not implemented".format(model_name))
 
                 model.init_sess(sess)
-                saver = tf.train.Saver()
+                saver = tf.compat.v1.train.Saver()
 
                 # Train
                 print("Reading in data")
