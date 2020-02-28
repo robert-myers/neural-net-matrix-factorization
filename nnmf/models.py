@@ -21,16 +21,17 @@ class _NNMFBase(object):
         self._epochs = 0
 
         # Input
-        self.user_index = tf.placeholder(tf.int32, [None])
-        self.item_index = tf.placeholder(tf.int32, [None])
-        self.r_target = tf.placeholder(tf.float32, [None])
+        self.user_index = tf.compat.v1.placeholder(tf.int32, [None])
+        self.item_index = tf.compat.v1.placeholder(tf.int32, [None])
+        self.r_target = tf.compat.v1.placeholder(tf.float32, [None])
 
         # Call methods to initialize variables and operations (to be implemented by children)
         self._init_vars()
         self._init_ops()
 
         # RMSE
-        self.rmse = tf.sqrt(tf.reduce_mean(tf.square(tf.sub(self.r, self.r_target))))
+        self.rmse = tf.sqrt(tf.reduce_mean(
+            tf.square(tf.subtract(self.r, self.r_target))))
 
     def _init_vars(self):
         raise NotImplementedError
@@ -88,10 +89,14 @@ class NNMF(_NNMFBase):
 
     def _init_vars(self):
         # Latents
-        self.U = tf.Variable(tf.truncated_normal([self.num_users, self.D], **self.latent_normal_init_params))
-        self.Uprime = tf.Variable(tf.truncated_normal([self.num_users, self.Dprime], **self.latent_normal_init_params))
-        self.V = tf.Variable(tf.truncated_normal([self.num_items, self.D], **self.latent_normal_init_params))
-        self.Vprime = tf.Variable(tf.truncated_normal([self.num_items, self.Dprime], **self.latent_normal_init_params))
+        self.U = tf.Variable(tf.compat.v1.truncated_normal(
+            [self.num_users, self.D], **self.latent_normal_init_params))
+        self.Uprime = tf.Variable(tf.compat.v1.truncated_normal(
+            [self.num_users, self.Dprime], **self.latent_normal_init_params))
+        self.V = tf.Variable(tf.compat.v1.truncated_normal(
+            [self.num_items, self.D], **self.latent_normal_init_params))
+        self.Vprime = tf.Variable(tf.compat.v1.truncated_normal(
+            [self.num_items, self.Dprime], **self.latent_normal_init_params))
 
         # Lookups
         self.U_lu = tf.nn.embedding_lookup(self.U, self.user_index)
@@ -100,14 +105,16 @@ class NNMF(_NNMFBase):
         self.Vprime_lu = tf.nn.embedding_lookup(self.Vprime, self.item_index)
 
         # MLP ("f")
-        f_input_layer = tf.concat(concat_dim=1, values=[self.U_lu, self.V_lu, tf.mul(self.Uprime_lu, self.Vprime_lu)])
+        f_input_layer = tf.concat(axis=1, values=[
+                                  self.U_lu, self.V_lu, tf.multiply(self.Uprime_lu, self.Vprime_lu)])
 
         _r, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
-        self.r = tf.squeeze(_r, squeeze_dims=[1])
+        self.r = tf.squeeze(_r, axis=[1])
 
     def _init_ops(self):
         # Loss
-        reconstruction_loss = tf.reduce_sum(tf.square(tf.sub(self.r_target, self.r)), reduction_indices=[0])
+        reconstruction_loss = tf.reduce_sum(
+            tf.square(tf.subtract(self.r_target, self.r)), reduction_indices=[0])
         reg = tf.add_n([tf.reduce_sum(tf.square(self.Uprime), reduction_indices=[0,1]),
                         tf.reduce_sum(tf.square(self.U), reduction_indices=[0,1]),
                         tf.reduce_sum(tf.square(self.V), reduction_indices=[0,1]),
@@ -183,22 +190,22 @@ class SVINNMF(_NNMFBase):
         # Latents
         self.U_mu = tf.Variable(tf.truncated_normal(
             [self.num_users, self.D], **self.latent_normal_init_params))
-        self.U_log_var = tf.Variable(tf.random_uniform(
+        self.U_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_users, self.D], minval=0.0, maxval=0.5))
 
         self.Uprime_mu = tf.Variable(tf.truncated_normal(
             [self.num_users, self.Dprime], **self.latent_normal_init_params))
-        self.Uprime_log_var = tf.Variable(tf.random_uniform(
+        self.Uprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_users, self.Dprime], minval=0.0, maxval=0.5))
 
         self.V_mu = tf.Variable(tf.truncated_normal(
             [self.num_items, self.D], **self.latent_normal_init_params))
-        self.V_log_var = tf.Variable(tf.random_uniform(
+        self.V_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_items, self.D], minval=0.0, maxval=0.5))
 
         self.Vprime_mu = tf.Variable(tf.truncated_normal(
             [self.num_items, self.Dprime], **self.latent_normal_init_params))
-        self.Vprime_log_var = tf.Variable(tf.random_uniform(
+        self.Vprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
             [self.num_items, self.Dprime], minval=0.0, maxval=0.5))
 
         # Lookups
@@ -231,10 +238,11 @@ class SVINNMF(_NNMFBase):
         self.Vprime = q_Vprime.sample()
 
         # MLP ("f")
-        f_input_layer = tf.concat(concat_dim=1, values=[self.U, self.V, tf.mul(self.Uprime, self.Vprime)])
+        f_input_layer = tf.concat(axis=1, values=[
+                                  self.U, self.V, tf.multiply(self.Uprime, self.Vprime)])
 
         self.r_mu, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
-        self.r = tf.squeeze(self.r_mu, squeeze_dims=[1])
+        self.r = tf.squeeze(self.r_mu, axis=[1])
 
         # For KL annealing
         self.kl_weight = tf.placeholder(tf.float32) if self.anneal_kl else tf.constant(1.0, dtype=tf.float32)
@@ -247,7 +255,8 @@ class SVINNMF(_NNMFBase):
         KL_all = KL_U + KL_Uprime + KL_V + KL_Vprime
 
         # TODO weighting of gradient, handle multiple samples
-        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(tf.square(tf.sub(self.r_target, self.r)), reduction_indices=[0])
+        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(
+            tf.square(tf.subtract(self.r_target, self.r)), reduction_indices=[0])
         elbo = log_prob-(self.kl_weight*KL_all)
         self.loss = -elbo
 

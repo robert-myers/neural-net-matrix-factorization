@@ -27,16 +27,16 @@ def build_mlp(f_input_layer, hidden_units_per_layer):
 
     # MLP weights picked uniformly from +/- 4*sqrt(6)/sqrt(n_in + n_out)
     mlp_weights = {
-        'h1': tf.Variable(tf.random_uniform([num_f_inputs, hidden_units_per_layer],
+        'h1': tf.Variable(tf.compat.v1.random_uniform([num_f_inputs, hidden_units_per_layer],
                                             **_weight_init_range(num_f_inputs, hidden_units_per_layer))),
         'b1': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'h2': tf.Variable(tf.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
+        'h2': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
                                             **_weight_init_range(hidden_units_per_layer, hidden_units_per_layer))),
         'b2': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'h3': tf.Variable(tf.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
+        'h3': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
                                             **_weight_init_range(hidden_units_per_layer, hidden_units_per_layer))),
         'b3': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'out': tf.Variable(tf.random_uniform([hidden_units_per_layer, 1],
+        'out': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, 1],
                                             **_weight_init_range(hidden_units_per_layer, 1))),
         'b_out': tf.Variable(tf.zeros([1])),
     }

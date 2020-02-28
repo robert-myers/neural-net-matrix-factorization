@@ -129,7 +129,7 @@ if __name__ == '__main__':
     max_epochs = args.max_epochs
 
     if mode in ('train', 'test'):
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             # Define computation graph & Initialize
             print('Building network & initializing variables')
             if model_name == 'NNMF':
