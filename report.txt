@@ -1,0 +1,157 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 6 files
+Detected 18 issues that require attention
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+File: neural-net-matrix-factorization/scripts/main.py
+--------------------------------------------------------------------------------
+neural-net-matrix-factorization/scripts/main.py:59:16: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+neural-net-matrix-factorization/scripts/main.py:64:12: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+File: neural-net-matrix-factorization/nnmf/models.py
+--------------------------------------------------------------------------------
+neural-net-matrix-factorization/nnmf/models.py:97:20: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:98:25: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:99:20: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:100:25: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:205:18: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:206:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:208:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:209:28: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:211:18: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:212:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:214:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:215:28: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+neural-net-matrix-factorization/nnmf/models.py:218:14: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+neural-net-matrix-factorization/nnmf/models.py:220:19: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+neural-net-matrix-factorization/nnmf/models.py:222:14: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+neural-net-matrix-factorization/nnmf/models.py:224:19: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+================================================================================
+Detailed log follows:
+
+================================================================================
+================================================================================
+Input tree: 'neural-net-matrix-factorization/'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/scripts/predict.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/scripts/predict.py'
+--------------------------------------------------------------------------------
+
+45:9: INFO: Renamed 'tf.Session' to 'tf.compat.v1.Session'
+47:16: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/scripts/main.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/scripts/main.py'
+--------------------------------------------------------------------------------
+
+59:16: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+64:12: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+132:13: INFO: Renamed 'tf.Session' to 'tf.compat.v1.Session'
+143:20: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+204:17: INFO: Renamed 'tf.Session' to 'tf.compat.v1.Session'
+216:24: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/scripts/split_data.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/scripts/split_data.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/nnmf/models.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/nnmf/models.py'
+--------------------------------------------------------------------------------
+
+24:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+25:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+26:24: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+33:28: INFO: Added keywords to args of function 'tf.reduce_mean'
+43:15: INFO: Renamed 'tf.initialize_all_variables' to 'tf.compat.v1.initialize_all_variables'
+91:29: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+92:34: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+93:29: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+94:34: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+97:20: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+97:20: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+98:25: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+98:25: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+99:20: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+99:20: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+100:25: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+100:25: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+106:17: INFO: Renamed keyword argument for tf.squeeze from squeeze_dims to axis
+110:30: INFO: Added keywords to args of function 'tf.reduce_sum'
+110:30: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+111:24: INFO: Added keywords to args of function 'tf.reduce_sum'
+111:24: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+112:24: INFO: Added keywords to args of function 'tf.reduce_sum'
+112:24: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+113:24: INFO: Added keywords to args of function 'tf.reduce_sum'
+113:24: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+114:24: INFO: Added keywords to args of function 'tf.reduce_sum'
+114:24: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+118:25: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+184:32: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+186:37: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+189:37: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+191:42: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+194:32: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+196:37: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+199:37: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+201:42: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+205:18: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+205:18: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+206:23: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+206:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+208:23: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+208:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+209:28: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+209:28: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+211:18: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+211:18: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+212:23: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+212:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+214:23: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+214:23: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+215:28: INFO: Added keywords to args of function 'tf.nn.embedding_lookup'
+215:28: WARNING: tf.nn.embedding_lookup requires manual check. `partition_strategy` has been removed from tf.nn.embedding_lookup.  The 'div' strategy will be used by default.
+218:14: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+220:19: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+222:14: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+224:19: ERROR: Using member tf.contrib.distributions.MultivariateNormalDiag in deprecated module tf.contrib. tf.contrib.distributions.MultivariateNormalDiag cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+237:17: INFO: Renamed keyword argument for tf.squeeze from squeeze_dims to axis
+240:25: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+250:41: INFO: Added keywords to args of function 'tf.reduce_sum'
+250:41: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+254:25: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/nnmf/__init__.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/nnmf/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'neural-net-matrix-factorization/nnmf/utils.py'
+ outputting to 'neural-net-matrix-factorization-reloaded/nnmf/utils.py'
+--------------------------------------------------------------------------------
+
+11:11: INFO: Added keywords to args of function 'tf.reduce_sum'
+11:11: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+11:25: INFO: Renamed 'tf.log' to 'tf.math.log'
+30:26: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+33:26: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+36:26: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+39:27: INFO: Renamed 'tf.random_uniform' to 'tf.random.uniform'
+--------------------------------------------------------------------------------
+

@@ -30,8 +30,7 @@ class _NNMFBase(object):
         self._init_ops()
 
         # RMSE
-        self.rmse = tf.sqrt(tf.reduce_mean(
-            tf.square(tf.subtract(self.r, self.r_target))))
+        self.rmse = tf.sqrt(tf.reduce_mean(input_tensor=tf.square(tf.sub(self.r, self.r_target))))
 
     def _init_vars(self):
         raise NotImplementedError
@@ -89,36 +88,30 @@ class NNMF(_NNMFBase):
 
     def _init_vars(self):
         # Latents
-        self.U = tf.Variable(tf.compat.v1.truncated_normal(
-            [self.num_users, self.D], **self.latent_normal_init_params))
-        self.Uprime = tf.Variable(tf.compat.v1.truncated_normal(
-            [self.num_users, self.Dprime], **self.latent_normal_init_params))
-        self.V = tf.Variable(tf.compat.v1.truncated_normal(
-            [self.num_items, self.D], **self.latent_normal_init_params))
-        self.Vprime = tf.Variable(tf.compat.v1.truncated_normal(
-            [self.num_items, self.Dprime], **self.latent_normal_init_params))
+        self.U = tf.Variable(tf.random.truncated_normal([self.num_users, self.D], **self.latent_normal_init_params))
+        self.Uprime = tf.Variable(tf.random.truncated_normal([self.num_users, self.Dprime], **self.latent_normal_init_params))
+        self.V = tf.Variable(tf.random.truncated_normal([self.num_items, self.D], **self.latent_normal_init_params))
+        self.Vprime = tf.Variable(tf.random.truncated_normal([self.num_items, self.Dprime], **self.latent_normal_init_params))
 
         # Lookups
-        self.U_lu = tf.nn.embedding_lookup(self.U, self.user_index)
-        self.Uprime_lu = tf.nn.embedding_lookup(self.Uprime, self.user_index)
-        self.V_lu = tf.nn.embedding_lookup(self.V, self.item_index)
-        self.Vprime_lu = tf.nn.embedding_lookup(self.Vprime, self.item_index)
+        self.U_lu = tf.nn.embedding_lookup(params=self.U, ids=self.user_index)
+        self.Uprime_lu = tf.nn.embedding_lookup(params=self.Uprime, ids=self.user_index)
+        self.V_lu = tf.nn.embedding_lookup(params=self.V, ids=self.item_index)
+        self.Vprime_lu = tf.nn.embedding_lookup(params=self.Vprime, ids=self.item_index)
 
         # MLP ("f")
-        f_input_layer = tf.concat(axis=1, values=[
-                                  self.U_lu, self.V_lu, tf.multiply(self.Uprime_lu, self.Vprime_lu)])
+        f_input_layer = tf.concat(concat_dim=1, values=[self.U_lu, self.V_lu, tf.mul(self.Uprime_lu, self.Vprime_lu)])
 
         _r, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
         self.r = tf.squeeze(_r, axis=[1])
 
     def _init_ops(self):
         # Loss
-        reconstruction_loss = tf.reduce_sum(
-            tf.square(tf.subtract(self.r_target, self.r)), axis=0)
-        reg = tf.add_n([tf.reduce_sum(tf.square(self.Uprime), axis=None),
-                        tf.reduce_sum(tf.square(self.U), axis=None),
-                        tf.reduce_sum(tf.square(self.V), axis=None),
-                        tf.reduce_sum(tf.square(self.Vprime), axis=None)])
+        reconstruction_loss = tf.reduce_sum(input_tensor=tf.square(tf.sub(self.r_target, self.r)), axis=[0])
+        reg = tf.add_n([tf.reduce_sum(input_tensor=tf.square(self.Uprime), axis=[0,1]),
+                        tf.reduce_sum(input_tensor=tf.square(self.U), axis=[0,1]),
+                        tf.reduce_sum(input_tensor=tf.square(self.V), axis=[0,1]),
+                        tf.reduce_sum(input_tensor=tf.square(self.Vprime), axis=[0,1])])
         self.loss = reconstruction_loss + (self.lam*reg)
 
         # Optimizer
@@ -188,38 +181,38 @@ class SVINNMF(_NNMFBase):
 
     def _init_vars(self):
         # Latents
-        self.U_mu = tf.Variable(tf.compat.v1.truncated_normal(
+        self.U_mu = tf.Variable(tf.random.truncated_normal(
             [self.num_users, self.D], **self.latent_normal_init_params))
-        self.U_log_var = tf.Variable(tf.compat.v1.random_uniform(
+        self.U_log_var = tf.Variable(tf.random.uniform(
             [self.num_users, self.D], minval=0.0, maxval=0.5))
 
-        self.Uprime_mu = tf.Variable(tf.compat.v1.truncated_normal(
+        self.Uprime_mu = tf.Variable(tf.random.truncated_normal(
             [self.num_users, self.Dprime], **self.latent_normal_init_params))
-        self.Uprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
+        self.Uprime_log_var = tf.Variable(tf.random.uniform(
             [self.num_users, self.Dprime], minval=0.0, maxval=0.5))
 
-        self.V_mu = tf.Variable(tf.compat.v1.truncated_normal(
+        self.V_mu = tf.Variable(tf.random.truncated_normal(
             [self.num_items, self.D], **self.latent_normal_init_params))
-        self.V_log_var = tf.Variable(tf.compat.v1.random_uniform(
+        self.V_log_var = tf.Variable(tf.random.uniform(
             [self.num_items, self.D], minval=0.0, maxval=0.5))
 
-        self.Vprime_mu = tf.Variable(tf.compat.v1.truncated_normal(
+        self.Vprime_mu = tf.Variable(tf.random.truncated_normal(
             [self.num_items, self.Dprime], **self.latent_normal_init_params))
-        self.Vprime_log_var = tf.Variable(tf.compat.v1.random_uniform(
+        self.Vprime_log_var = tf.Variable(tf.random.uniform(
             [self.num_items, self.Dprime], minval=0.0, maxval=0.5))
 
         # Lookups
-        U_mu_lu = tf.nn.embedding_lookup(self.U_mu, self.user_index)
-        U_log_var_lu = tf.nn.embedding_lookup(self.U_log_var, self.user_index)
+        U_mu_lu = tf.nn.embedding_lookup(params=self.U_mu, ids=self.user_index)
+        U_log_var_lu = tf.nn.embedding_lookup(params=self.U_log_var, ids=self.user_index)
 
-        Uprime_mu_lu = tf.nn.embedding_lookup(self.Uprime_mu, self.user_index)
-        Uprime_log_var_lu = tf.nn.embedding_lookup(self.Uprime_log_var, self.user_index)
+        Uprime_mu_lu = tf.nn.embedding_lookup(params=self.Uprime_mu, ids=self.user_index)
+        Uprime_log_var_lu = tf.nn.embedding_lookup(params=self.Uprime_log_var, ids=self.user_index)
 
-        V_mu_lu = tf.nn.embedding_lookup(self.V_mu, self.item_index)
-        V_log_var_lu = tf.nn.embedding_lookup(self.V_log_var, self.item_index)
+        V_mu_lu = tf.nn.embedding_lookup(params=self.V_mu, ids=self.item_index)
+        V_log_var_lu = tf.nn.embedding_lookup(params=self.V_log_var, ids=self.item_index)
 
-        Vprime_mu_lu = tf.nn.embedding_lookup(self.Vprime_mu, self.item_index)
-        Vprime_log_var_lu = tf.nn.embedding_lookup(self.Vprime_log_var, self.item_index)
+        Vprime_mu_lu = tf.nn.embedding_lookup(params=self.Vprime_mu, ids=self.item_index)
+        Vprime_log_var_lu = tf.nn.embedding_lookup(params=self.Vprime_log_var, ids=self.item_index)
 
         # Posterior (q) - note this handles reparameterization for us
         q_U = tf.contrib.distributions.MultivariateNormalDiag(mu=U_mu_lu,
@@ -238,14 +231,13 @@ class SVINNMF(_NNMFBase):
         self.Vprime = q_Vprime.sample()
 
         # MLP ("f")
-        f_input_layer = tf.concat(axis=1, values=[
-                                  self.U, self.V, tf.multiply(self.Uprime, self.Vprime)])
+        f_input_layer = tf.concat(concat_dim=1, values=[self.U, self.V, tf.mul(self.Uprime, self.Vprime)])
 
         self.r_mu, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
         self.r = tf.squeeze(self.r_mu, axis=[1])
 
         # For KL annealing
-        self.kl_weight = tf.placeholder(tf.float32) if self.anneal_kl else tf.constant(1.0, dtype=tf.float32)
+        self.kl_weight = tf.compat.v1.placeholder(tf.float32) if self.anneal_kl else tf.constant(1.0, dtype=tf.float32)
 
     def _init_ops(self):
         KL_U = KL(self.U_mu, self.U_log_var, prior_var=self.U_prior_var)
@@ -255,12 +247,11 @@ class SVINNMF(_NNMFBase):
         KL_all = KL_U + KL_Uprime + KL_V + KL_Vprime
 
         # TODO weighting of gradient, handle multiple samples
-        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(
-            tf.square(tf.subtract(self.r_target, self.r)), axis=0)
+        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(input_tensor=tf.square(tf.sub(self.r_target, self.r)), axis=[0])
         elbo = log_prob-(self.kl_weight*KL_all)
         self.loss = -elbo
 
-        self.optimizer = tf.train.AdamOptimizer()
+        self.optimizer = tf.compat.v1.train.AdamOptimizer()
         self.optimize_steps = [self.optimizer.minimize(self.loss)]
 
     def train_iteration(self, data):

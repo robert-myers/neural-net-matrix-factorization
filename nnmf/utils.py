@@ -8,8 +8,8 @@ import tensorflow as tf
 
 def KL(mean, log_var, prior_var):
     """Computes KL divergence for a group of univariate normals (ie. every dimension of a latent)."""
-    return tf.reduce_sum(tf.log(math.sqrt(prior_var) / tf.sqrt(tf.exp(log_var))) + (
-    (tf.exp(log_var) + tf.square(mean)) / (2.0 * prior_var)), reduction_indices=[0, 1])
+    return tf.reduce_sum(input_tensor=tf.math.log(math.sqrt(prior_var) / tf.sqrt(tf.exp(log_var))) + (
+    (tf.exp(log_var) + tf.square(mean)) / (2.0 * prior_var)), axis=[0, 1])
 
 def _weight_init_range(n_in, n_out):
     """Calculates range for picking initial weight values from a uniform distribution."""
@@ -27,16 +27,16 @@ def build_mlp(f_input_layer, hidden_units_per_layer):
 
     # MLP weights picked uniformly from +/- 4*sqrt(6)/sqrt(n_in + n_out)
     mlp_weights = {
-        'h1': tf.Variable(tf.compat.v1.random_uniform([num_f_inputs, hidden_units_per_layer],
+        'h1': tf.Variable(tf.random.uniform([num_f_inputs, hidden_units_per_layer],
                                             **_weight_init_range(num_f_inputs, hidden_units_per_layer))),
         'b1': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'h2': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
+        'h2': tf.Variable(tf.random.uniform([hidden_units_per_layer, hidden_units_per_layer],
                                             **_weight_init_range(hidden_units_per_layer, hidden_units_per_layer))),
         'b2': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'h3': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, hidden_units_per_layer],
+        'h3': tf.Variable(tf.random.uniform([hidden_units_per_layer, hidden_units_per_layer],
                                             **_weight_init_range(hidden_units_per_layer, hidden_units_per_layer))),
         'b3': tf.Variable(tf.zeros([hidden_units_per_layer])),
-        'out': tf.Variable(tf.compat.v1.random_uniform([hidden_units_per_layer, 1],
+        'out': tf.Variable(tf.random.uniform([hidden_units_per_layer, 1],
                                             **_weight_init_range(hidden_units_per_layer, 1))),
         'b_out': tf.Variable(tf.zeros([1])),
     }

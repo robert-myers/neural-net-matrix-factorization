@@ -42,9 +42,9 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError("Model '{}' not implemented".format(model_name))
 
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         model.init_sess(sess)
-        saver = tf.train.Saver()
+        saver = tf.compat.v1.train.Saver()
 
         print('Loading model')
         saver.restore(sess, model.model_filename)
