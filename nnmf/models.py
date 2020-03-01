@@ -100,7 +100,7 @@ class NNMF(_NNMFBase):
         self.Vprime_lu = tf.nn.embedding_lookup(params=self.Vprime, ids=self.item_index)
 
         # MLP ("f")
-        f_input_layer = tf.concat(concat_dim=1, values=[self.U_lu, self.V_lu, tf.multiply(self.Uprime_lu, self.Vprime_lu)])
+        f_input_layer = tf.concat(axis=1, values=[self.U_lu, self.V_lu, tf.multiply(self.Uprime_lu, self.Vprime_lu)])
 
         _r, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
         self.r = tf.squeeze(_r, axis=[1])
@@ -231,7 +231,7 @@ class SVINNMF(_NNMFBase):
         self.Vprime = q_Vprime.sample()
 
         # MLP ("f")
-        f_input_layer = tf.concat(concat_dim=1, values=[self.U, self.V, tf.mul(self.Uprime, self.Vprime)])
+        f_input_layer = tf.concat(axis=1, values=[self.U, self.V, tf.mul(self.Uprime, self.Vprime)])
 
         self.r_mu, self.mlp_weights = build_mlp(f_input_layer, hidden_units_per_layer=self.hidden_units_per_layer)
         self.r = tf.squeeze(self.r_mu, axis=[1])
