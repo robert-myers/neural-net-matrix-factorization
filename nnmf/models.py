@@ -30,7 +30,8 @@ class _NNMFBase(object):
         self._init_ops()
 
         # RMSE
-        self.rmse = tf.sqrt(tf.reduce_mean(input_tensor=tf.square(tf.sub(self.r, self.r_target))))
+        self.rmse = tf.sqrt(tf.reduce_mean(
+            input_tensor=tf.square(tf.subtract(self.r, self.r_target))))
 
     def _init_vars(self):
         raise NotImplementedError
@@ -107,7 +108,8 @@ class NNMF(_NNMFBase):
 
     def _init_ops(self):
         # Loss
-        reconstruction_loss = tf.reduce_sum(input_tensor=tf.square(tf.sub(self.r_target, self.r)), axis=[0])
+        reconstruction_loss = tf.reduce_sum(input_tensor=tf.square(
+            tf.subtract(self.r_target, self.r)), axis=[0])
         reg = tf.add_n([tf.reduce_sum(input_tensor=tf.square(self.Uprime), axis=[0,1]),
                         tf.reduce_sum(input_tensor=tf.square(self.U), axis=[0,1]),
                         tf.reduce_sum(input_tensor=tf.square(self.V), axis=[0,1]),
@@ -247,7 +249,8 @@ class SVINNMF(_NNMFBase):
         KL_all = KL_U + KL_Uprime + KL_V + KL_Vprime
 
         # TODO weighting of gradient, handle multiple samples
-        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(input_tensor=tf.square(tf.sub(self.r_target, self.r)), axis=[0])
+        log_prob = -(1/(2.0*self.r_var))*tf.reduce_sum(
+            input_tensor=tf.square(tf.subtract(self.r_target, self.r)), axis=[0])
         elbo = log_prob-(self.kl_weight*KL_all)
         self.loss = -elbo
 
